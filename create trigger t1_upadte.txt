@@ -1,0 +1,40 @@
+create trigger t1_upadte
+    -> before update on bank
+    -> for each row
+    -> begin
+    -> if new.balanace <500 && new.balance+old.balanace<100000
+    -> signal sqlstate '45000' set message_text ='invalid balance';
+    -> end if;
+    -> end #
+
+
+
+ create trigger t1
+    -> before insert on bank
+    -> for each row
+    -> begin
+    -> set new.fname=upper(left(fname,1));
+    -> if new.balance>500 then
+    -> signal sqlstate '45000'
+    ->     set message_text='balance should be greater than 500';
+    -> end if;
+    -> end #
+
+
+ insert into bank(fname,lname,name,dob,age,balance)values
+    -> ('Kavya','byreddy','kavyabyreddy','2002-09-18',22,2097),
+    -> ('Sravya','byreddy','sravyabyreddy','2002-04-17',23,2000),
+    -> ('Navya','byreddy','navyaabyreddy','2012-09-17',23,3000),
+    -> ('Divvya','byreddy','divyabyreddy','1999-09-17',33,4000),
+    -> ('Smily','byreddy','smilybyreddy','2002-09-17',23,300);
+    -> #
+
+create table bank(
+    -> a_no int primary key auto_increment,
+    -> fname varchar(30),
+    -> lname varchar(30),
+    -> name varchar(60),
+    -> dob datetime,
+    -> age int,
+    -> balance double
+    -> );
